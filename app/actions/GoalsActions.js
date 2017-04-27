@@ -54,6 +54,30 @@ export function resetAddStepToGoalModal() {
   };
 }
 
+export function addStepToGoalRequest() {
+  return (dispatch, getState) => {
+    const { name, description } = getState().goals.addStepToGoalModal;
+    const body = {
+      name,
+      description,
+      tags,
+      level,
+      icon,
+    };
+    dispatch(showAddGoalsSpinner(true));
+    return httpClient.post(config.goals_api_url, body)
+      .then(() => {
+        dispatch(resetGoalModal());
+        dispatch(fetchGoals());
+        dispatch(addNotification(`Goal ${name} added.`, 'success'));
+      })
+      .catch(() => {
+        dispatch(resetGoalModal());
+        dispatch(addNotification('Sorry, something bad happen...'));
+      });
+  };
+}
+
 export function resetExistingGoalModal() {
   return {
     type: GOALS.ADD_EXISTING.RESET,
