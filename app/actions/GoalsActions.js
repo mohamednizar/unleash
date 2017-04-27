@@ -22,6 +22,7 @@ export const GOALS = {
   },
   ADD_STEP: {
     SHOW_MODAL: 'GOALS_ADD_STEP_SHOW_MODAL',
+    RESET: 'GOALS_ADD_STEP_RESET',
   },
 };
 
@@ -44,6 +45,12 @@ export function showAddStepToGoalModal(showModal, goalId) {
     type: GOALS.ADD_STEP.SHOW_MODAL,
     showModal,
     goalId,
+  };
+}
+
+export function resetAddStepToGoalModal() {
+  return {
+    type: GOALS.ADD_STEP.RESET,
   };
 }
 

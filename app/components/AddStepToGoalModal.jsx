@@ -5,10 +5,14 @@ import FlatButton from 'material-ui/FlatButton';
 class AddStepToGoalModal extends React.Component {
 
   generateActionButtons() {
+    const { actions } = this.props;
+
     return [(
       <FlatButton
         label="Cancel"
-      />), (<FlatButton
+        onClick={() => actions.resetAddStepToGoalModal()}
+      />),
+      (<FlatButton
         label="Submit"
         secondary
       />),
@@ -38,6 +42,9 @@ AddStepToGoalModal.propTypes = {
     showModal: PropTypes.bool.isRequired,
     id: PropTypes.string.isRequired,
     goalId: PropTypes.string.isRequired,
+  }).isRequired,
+  actions: React.PropTypes.shape({
+    resetAddStepToGoalModal: React.PropTypes.func,
   }).isRequired,
 };
 

@@ -69,6 +69,13 @@ function goalsReducer(state = initialState, action) {
           selectedGoal: action.goalId,
         },
       };
+    case GOALS.ADD_STEP.RESET:
+      return {
+        ...state,
+        addStepToGoalModal: {
+          ...initialState.addStepToGoalModal,
+        },
+      };
     case GOALS.ADD_EXISTING.RESET:
       return {
         ...state,
