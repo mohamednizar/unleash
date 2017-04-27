@@ -16,7 +16,13 @@ class Paths extends Component {
   }
 
   renderGoals(path) {
-    const { actions, paths, editable, profile } = this.props;
+    const {
+      actions,
+      paths,
+      editable,
+      profile,
+      addStepToGoalModalParameters,
+    } = this.props;
 
     return map(path.goals, (goal) => {
       const loading = some(paths.goals, { id: goal.id, path: { id: path.id } });
@@ -30,6 +36,7 @@ class Paths extends Component {
           editable={editable}
           profile={profile}
           paths={paths.list}
+          addStepToGoalModalParameters={addStepToGoalModalParameters}
           usersGoal
         />
       );
@@ -99,6 +106,10 @@ Paths.propTypes = {
     isLoading: React.PropTypes.boolean,
   }).isRequired,
   editable: React.PropTypes.bool.isRequired,
+  addStepToGoalModalParameters: React.PropTypes.shape({
+    showModal: React.PropTypes.bool,
+    selectedGoal: React.PropTypes.string,
+  }).isRequired,
 };
 
 styles = {

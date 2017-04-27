@@ -20,6 +20,10 @@ const initialState = {
     selectedPath: null,
     selectedGoal: null,
   },
+  addStepToGoalModal: {
+    showModal: false,
+    selectedGoal: null,
+  },
 };
 
 function goalsReducer(state = initialState, action) {
@@ -54,6 +58,15 @@ function goalsReducer(state = initialState, action) {
         addExistingGoalsModal: {
           ...state.addExistingGoalsModal,
           showModal: action.showModal,
+        },
+      };
+    case GOALS.ADD_STEP.SHOW_MODAL:
+      return {
+        ...state,
+        addStepToGoalModal: {
+          ...state.addStepToGoalModal,
+          showModal: action.showModal,
+          selectedGoal: action.goalId,
         },
       };
     case GOALS.ADD_EXISTING.RESET:

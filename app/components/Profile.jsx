@@ -73,6 +73,7 @@ class Profile extends Component {
       profiles,
       loggedInUser,
       addExistingGoalsModalParameters,
+      addStepToGoalModalParameters,
       isLoading,
     } = this.props;
 
@@ -129,6 +130,7 @@ class Profile extends Component {
             paths={paths}
             editable={editable}
             profile={profiles.profile}
+            addStepToGoalModalParameters={addStepToGoalModalParameters}
           />
           {addGoalButton}
         </div>
@@ -176,6 +178,10 @@ Profile.propTypes = {
     selectedGoal: React.PropTypes.object,
   }).isRequired,
   isLoading: React.PropTypes.bool,
+  addStepToGoalModalParameters: React.PropTypes.shape({
+    showModal: React.PropTypes.bool,
+    selectedGoal: React.PropTypes.string,
+  }).isRequired,
 };
 
 export default Profile;

@@ -45,6 +45,12 @@ export const PATHS = {
     SUCCESS: 'ADD_PATHS_EXISTING_GOAL_SUCCESS',
     FAILURE: 'ADD_PATHS_EXISTING_GOAL_FAILURE',
   },
+  ADD_STEP_TO_GOAL: {
+    SHOW_MODAL: 'ADD_STEP_TO_GOAL_SHOW_MODAL',
+    START: 'ADD_STEP_TO_GOAL_START',
+    SUCCESS: 'ADD_STEP_TO_GOAL_SUCCESS',
+    FAILURE: 'ADD_STEP_TO_GOAL_FAILURE',
+  },
   REMOVE_GOAL: {
     START: 'REMOVE_PATHS_GOAL_START',
     SUCCESS: 'REMOVE_PATHS_GOAL_SUCCESS',
@@ -110,6 +116,23 @@ export function removeGoalFromPath(goal, path, userId) {
       .catch(() => {
         dispatch({ type: PATHS.REMOVE_GOAL.FAILURE });
         dispatch(addNotification('Sorry, something bad happen...'));
+      });
+  };
+}
+
+export function addStepToGoalOnPath(goal, path) {
+  return (dispatch) => {
+    dispatch({ type: PATHS.ADD_STEP_TO_GOAL.START });
+    const data = { name: 'test', description: 'test' };
+
+    return httpClient.post(`${config.paths_api_url}/${path.id}/goals/${goal.id}/steps`, data)
+      .then((resp) => {
+        console.log('test call respo', resp);
+        dispatch({ type: PATHS.ADD_STEP_TO_GOAL.SUCCESS });
+      })
+      .catch((err) => {
+        dispatch({ type: PATHS.ADD_STEP_TO_GOAL.FAILURE });
+        console.log('test call error', err);
       });
   };
 }
@@ -186,6 +209,13 @@ export function addGoalToPathRequest() {
         dispatch({ type: PATHS.ADD_GOAL.FAILURE });
         dispatch(addNotification('Sorry, something bad happen...'));
       });
+  };
+}
+
+export function showAddStepToGoalModal(showModal) {
+  return {
+    type: PATHS.ADD_STEP_TO_GOAL.SHOW_MODAL,
+    showModal,
   };
 }
 

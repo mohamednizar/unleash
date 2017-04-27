@@ -20,6 +20,9 @@ export const GOALS = {
     UPDATE_PATH: 'GOALS_ADD_EXISTING_UPDATE_PATH',
     UPDATE_GOAL: 'GOALS_ADD_EXISTING_UPDATE_GOAL',
   },
+  ADD_STEP: {
+    SHOW_MODAL: 'GOALS_ADD_STEP_SHOW_MODAL',
+  },
 };
 
 export function showGoalsModal(showModal) {
@@ -33,6 +36,14 @@ export function showAddExistingGoalsModal(showModal) {
   return {
     type: GOALS.ADD_EXISTING.SHOW_MODAL,
     showModal,
+  };
+}
+
+export function showAddStepToGoalModal(showModal, goalId) {
+  return {
+    type: GOALS.ADD_STEP.SHOW_MODAL,
+    showModal,
+    goalId,
   };
 }
 

@@ -8,6 +8,7 @@ import toggleHOC from '../hocs/toggleHOC';
 import MilestoneImg from '../assets/milestone.png';
 import Loading from './Loading';
 import GoalsModal from './GoalsModal';
+import AddStepToGoalModal from './AddStepToGoalModal';
 
 const DIALOG_TOGGLE = 'dialog';
 const NOTIFY_ON_SLACK = 'notify-on-slack';
@@ -33,6 +34,10 @@ const propTypes = {
   paths: PropTypes.array,
   editable: PropTypes.bool,
   usersGoal: PropTypes.bool,
+  addStepToGoalModalParameters: React.PropTypes.shape({
+    showModal: React.PropTypes.bool,
+    selectedGoal: React.PropTypes.string,
+  }).isRequired,
 };
 
 class GoalCard extends Component {
@@ -113,7 +118,7 @@ class GoalCard extends Component {
   }
 
   generateModalActions() {
-    const { goal, editable, usersGoal } = this.props;
+    const { goal, editable, usersGoal, actions } = this.props;
     const modalActions = [
       <FlatButton
         label="Close"
@@ -138,6 +143,16 @@ class GoalCard extends Component {
           primary
           onTouchTap={() => this.toggleAchievement()}
         />);
+    }
+
+    if (!goal.achieved) {
+      modalActions.unshift(
+        <FlatButton
+          label="Add step"
+          primary
+          onClick={() => actions.showAddStepToGoalModal(true, goal.id)}
+        />,
+      );
     }
 
     return modalActions;
@@ -176,13 +191,24 @@ class GoalCard extends Component {
     return extraFields;
   }
 
+  renderAddStepToGoalModal(addStepToGoalModalParameters) {
+    const { goal } = this.state;
+    const modalParams = {
+      ...goal,
+      ...addStepToGoalModalParameters,
+    };
+
+    return (
+      <AddStepToGoalModal parameters={modalParams} />
+    );
+  }
+
   renderGoalModal() {
     const { paths, editable, usersGoal } = this.props;
     const { path, goal } = this.state;
     const open = this.props.getToggleState(DIALOG_TOGGLE);
     const modalActions = this.generateModalActions();
     const extraFields = this.generateExtraFields();
-
     let modalParams = {
       ...goal,
       showModal: open,
@@ -195,7 +221,6 @@ class GoalCard extends Component {
         path: path.id,
       };
     }
-
     return (
       <GoalsModal
         parameters={modalParams}
@@ -210,7 +235,12 @@ class GoalCard extends Component {
   }
 
   render() {
-    const { goal, loading } = this.props;
+    const {
+      goal,
+      loading,
+      addStepToGoalModalParameters,
+    } = this.props;
+
     const achieved = goal.achieved;
     const dueDays = goal.dueDate ? this.daysLeft(goal.dueDate) : 0;
     const inProgress = !goal.achieved && goal.dueDate;
@@ -240,6 +270,7 @@ class GoalCard extends Component {
           </div>
         </Loading>
         {this.renderGoalModal()}
+        {this.renderAddStepToGoalModal(addStepToGoalModalParameters)}
       </Paper>
     );
   }

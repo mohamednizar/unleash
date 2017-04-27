@@ -23,6 +23,7 @@ function mapStateToProps(state) {
     loggedInUser: user.userData,
     addModalParameters: goals.addGoalsModal,
     addExistingGoalsModalParameters: goals.addExistingGoalsModal,
+    addStepToGoalModalParameters: goals.addStepToGoalModal,
     isLoading,
   };
 }
