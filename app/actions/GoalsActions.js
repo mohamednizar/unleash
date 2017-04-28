@@ -23,6 +23,10 @@ export const GOALS = {
   ADD_STEP: {
     SHOW_MODAL: 'GOALS_ADD_STEP_SHOW_MODAL',
     RESET: 'GOALS_ADD_STEP_RESET',
+    START: 'GOALS_ADD_STEP_START',
+    SUCCESS: 'GOALS_ADD_STEP_SUCCESS',
+    FAILURE: 'GOALS_ADD_STEP_FAILURE',
+    UPDATE_FIELD: 'GOALS_ADD_STEP_UPDATE_FIELD',
   },
 };
 
@@ -54,30 +58,6 @@ export function resetAddStepToGoalModal() {
   };
 }
 
-export function addStepToGoalRequest() {
-  return (dispatch, getState) => {
-    const { name, description } = getState().goals.addStepToGoalModal;
-    const body = {
-      name,
-      description,
-      tags,
-      level,
-      icon,
-    };
-    dispatch(showAddGoalsSpinner(true));
-    return httpClient.post(config.goals_api_url, body)
-      .then(() => {
-        dispatch(resetGoalModal());
-        dispatch(fetchGoals());
-        dispatch(addNotification(`Goal ${name} added.`, 'success'));
-      })
-      .catch(() => {
-        dispatch(resetGoalModal());
-        dispatch(addNotification('Sorry, something bad happen...'));
-      });
-  };
-}
-
 export function resetExistingGoalModal() {
   return {
     type: GOALS.ADD_EXISTING.RESET,
@@ -94,6 +74,14 @@ export function showAddGoalsSpinner(showSpinner) {
 export function updateAddGoalsField(fieldKey, fieldValue) {
   return {
     type: GOALS.ADD.UPDATE_FIELD,
+    fieldKey,
+    fieldValue,
+  };
+}
+
+export function updateAddStepToGoalField(fieldKey, fieldValue) {
+  return {
+    type: GOALS.ADD_STEP.UPDATE_FIELD,
     fieldKey,
     fieldValue,
   };
@@ -148,6 +136,27 @@ export function addGoalRequest() {
       })
       .catch(() => {
         dispatch(resetGoalModal());
+        dispatch(addNotification('Sorry, something bad happen...'));
+      });
+  };
+}
+
+export function addStepToGoalRequest(pathId, goalId) {
+  return (dispatch, getState) => {
+    const state = getState().goals.addStepToGoalModal;
+    const body = {
+      name: state.name,
+      description: state.description,
+    };
+    const url = `${config.paths_api_url}/${pathId}/goals/${goalId}/steps`;
+    return httpClient.post(url, body)
+      .then(() => {
+        dispatch({ type: GOALS.ADD_STEP.SUCCESS });
+        dispatch(addNotification(`Step ${name} added.`, 'success'));
+        dispatch(resetAddStepToGoalModal());
+      })
+      .catch(() => {
+        dispatch({ type: GOALS.ADD_STEP.FAILURE });
         dispatch(addNotification('Sorry, something bad happen...'));
       });
   };

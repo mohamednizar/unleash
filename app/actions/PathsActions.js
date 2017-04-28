@@ -120,23 +120,6 @@ export function removeGoalFromPath(goal, path, userId) {
   };
 }
 
-export function addStepToGoalOnPath(goal, path) {
-  return (dispatch) => {
-    dispatch({ type: PATHS.ADD_STEP_TO_GOAL.START });
-    const data = { name: 'test', description: 'test' };
-
-    return httpClient.post(`${config.paths_api_url}/${path.id}/goals/${goal.id}/steps`, data)
-      .then((resp) => {
-        console.log('test call respo', resp);
-        dispatch({ type: PATHS.ADD_STEP_TO_GOAL.SUCCESS });
-      })
-      .catch((err) => {
-        dispatch({ type: PATHS.ADD_STEP_TO_GOAL.FAILURE });
-        console.log('test call error', err);
-      });
-  };
-}
-
 export function pathsUpdateGoal(path, goal, data, slackOptions = {}) {
   const inflatedGoal = { ...goal, path };
 

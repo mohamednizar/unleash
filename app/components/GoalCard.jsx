@@ -192,17 +192,20 @@ class GoalCard extends Component {
   }
 
   renderAddStepToGoalModal() {
-    const { goal } = this.state;
+    const { path, goal } = this.state;
     const { actions, addStepToGoalModalParameters } = this.props;
     const modalParams = {
       ...goal,
       ...addStepToGoalModalParameters,
+      pathId: path.id,
     };
 
     return (
       <AddStepToGoalModal
         parameters={modalParams}
         actions={actions}
+        onFieldChange={(fieldName, fieldValue) =>
+          actions.updateAddStepToGoalField(fieldName, fieldValue)}
       />
     );
   }

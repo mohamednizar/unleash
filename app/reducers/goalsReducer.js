@@ -23,6 +23,8 @@ const initialState = {
   addStepToGoalModal: {
     showModal: false,
     selectedGoal: null,
+    description: '',
+    name: '',
   },
 };
 
@@ -112,6 +114,14 @@ function goalsReducer(state = initialState, action) {
         ...state,
         addGoalsModal: {
           ...state.addGoalsModal,
+          [action.fieldKey]: action.fieldValue,
+        },
+      };
+    case GOALS.ADD_STEP.UPDATE_FIELD:
+      return {
+        ...state,
+        addStepToGoalModal: {
+          ...state.addStepToGoalModal,
           [action.fieldKey]: action.fieldValue,
         },
       };

@@ -9,21 +9,22 @@ let styles = {};
 class AddStepToGoalModal extends React.Component {
 
   generateTextField(fieldName) {
+    const { onFieldChange } = this.props;
     return (
       <TextField
         style={styles.textFields}
         floatingLabelText={capitalize(fieldName)}
+        onChange={event => onFieldChange(fieldName, event.target.value)}
       />
     );
   }
 
   generateActionButtons() {
-    const { actions } = this.props;
-
+    const { actions, parameters } = this.props;
     return [(
       <FlatButton
         label="Submit"
-        onClick={() => actions.addStepToGoalRequest()}
+        onClick={() => actions.addStepToGoalRequest(parameters.pathId, parameters.selectedGoal)}
         primary
       />),
       (<FlatButton
@@ -57,10 +58,10 @@ class AddStepToGoalModal extends React.Component {
 
 AddStepToGoalModal.propTypes = {
   parameters: PropTypes.shape({
-    showModal: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
-    goalId: PropTypes.string.isRequired,
+    pathId: PropTypes.string.isRequired,
+    selectedGoal: PropTypes.string.isRequired,
   }).isRequired,
+  onFieldChange: PropTypes.func.isRequired,
   actions: React.PropTypes.shape({
     resetAddStepToGoalModal: React.PropTypes.func,
     addStepToGoalRequest: React.PropTypes.func,
